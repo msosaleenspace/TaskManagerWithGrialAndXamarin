@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Eleos3" xmlns:grial="clr-namespace:UXDivers.Grial;assembly=UXDivers.Grial" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+	x:Class="Eleos3.TabbedAddTaskPage"
+	NavigationPage.HasNavigationBar="False"
+	Style="{ StaticResource MainMenuOrModalBackgroundStyle }">
+    <ContentPage.Resources>
+        <ResourceDictionary
+			Source="/Styles/TabControl/SimpleTabResources.xaml" />
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+					Height="145" />
+                <RowDefinition
+					Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid
+				RowSpacing="0"
+				ColumnSpacing="0"
+				Margin="0,0,0,10"
+				VerticalOptions="EndAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+						Height="10" />
+                    <RowDefinition
+						Height="Auto" />
+                    <RowDefinition
+						Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+						Width="120" />
+                    <ColumnDefinition
+						Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- LOGO -->
+                <Label
+					Grid.Row="0"
+					Grid.RowSpan="3"
+					Margin="20,0"
+					TextColor="{ DynamicResource InverseTextColor }"
+					FontSize="74"
+					Text="{ x:Static local:GrialIconsFont.LogoGrialSquare }"
+					Style="{ StaticResource FontIcon }"
+					HorizontalOptions="Start"
+					VerticalTextAlignment="Center" />
+                    
+                <!-- WELCOME -->
+                <Label
+					Grid.Row="1"
+					Grid.Column="1"
+					Text="{ grial:Translate StringWelcomeToGrial }"
+					FontSize="22"
+					TextColor="{ DynamicResource InverseTextColor }"
+					Style="{ StaticResource LabelBoldStyle }"
+					VerticalOptions="End"
+					HorizontalOptions="Start" />
+                    
+                
+            </Grid>
+
+            <Grid
+				Grid.Row="1"
+				BackgroundColor="{ DynamicResource MainWrapperBackgroundColor }"
+				grial:Effects.ApplyIOSSafeAreaAsPadding="Bottom">
+                
+				<!-- ADD TASK TAB -->
+                <grial:TabControl
+					Style="{ StaticResource SimpleTabStyle }"
+					TabStripPlacement="Top"
+					TabStripBackgroundColor="{ DynamicResource BasePageColor}"
+					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }">
+
+					<grial:TabItem
+						IconText="{ x:Static local:GrialIconsFont.Camera }"
+						Text="Add Task">   
+                        <ScrollView>
+                            <Grid
+								Padding="20"
+								Style="{ StaticResource ResponsiveLandscapeMarginStyle }">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+										Height="*" />
+                                    <RowDefinition
+										Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackLayout
+									Grid.Row="0"
+									VerticalOptions="Center"
+									Spacing="20">
+                                    <!-- Name -->
+                                    <StackLayout
+										Orientation="Horizontal"
+										Spacing="14">
+                                        <Label
+											FontSize="24"
+											VerticalOptions="Center"
+											HorizontalOptions="Center"
+											Text="{ x:Static local:GrialIconsFont.Mail }"
+											FontFamily="{ StaticResource IconsFontFamily }"
+											TextColor="{ DynamicResource BaseTextColor }" />
+
+                                        <Entry
+											Placeholder="Name"
+											VerticalOptions="Center"
+											HorizontalOptions="FillAndExpand" />
+                                        
+                                    </StackLayout>
+
+                                    <!-- Date -->
+                                    <StackLayout
+										Orientation="Horizontal"
+										Spacing="14">
+                                        <Label
+											FontSize="24"
+											VerticalOptions="Center"
+											HorizontalOptions="Center"
+											Text="{ x:Static local:GrialIconsFont.Lock }"
+											FontFamily="{ StaticResource IconsFontFamily }"
+											TextColor="{ DynamicResource BaseTextColor }" />
+
+                                        <DatePicker HorizontalOptions="FillAndExpand">
+
+										</DatePicker>
+
+                                    </StackLayout>
+
+                                </StackLayout>
+
+                                <StackLayout
+									Grid.Row="1"
+									Spacing="15"
+									VerticalOptions="End"
+									Margin="0,30,0,0">
+                                    <!-- Primary Button -->
+                                    <Button
+										HeightRequest="44"
+										VerticalOptions="Center"
+										Text="Confirm"
+										Style="{ StaticResource PrimaryActionButtonStyle }" />
+                                </StackLayout>
+
+                            </Grid>
+                        </ScrollView>
+                        
+                    </grial:TabItem>
+
+                    <!-- LOGOUT TAB -->
+                    <grial:TabItem
+						IconText="{ x:Static local:GrialIconsFont.Camera }"
+						Text="Logout">
+                        <ScrollView>
+                            <Grid
+								Padding="20,0,20,0"
+								Style="{ StaticResource ResponsiveLandscapeMarginStyle }"
+								RowSpacing="10"
+								VerticalOptions="Center">
+                                
+								<Grid.RowDefinitions>
+                                    <RowDefinition
+										Height="*" />
+                                    <RowDefinition
+										Height="*" />
+                                </Grid.RowDefinitions>
+                                
+                                <StackLayout
+									Grid.Row="0"
+									Spacing="0"
+									VerticalOptions="Center"
+									Margin="0,0,0,0">
+                                    <Button 
+										HeightRequest="44"
+										VerticalOptions="Center"
+										Text="Logout"
+										Style="{ StaticResource PrimaryActionButtonStyle }"
+										Clicked="OnDeleteTaskBtnClicked"/>
+                                </StackLayout>
+
+								<StackLayout
+										Grid.Row="1"
+										Spacing="0">
+                                        <Label
+											x:Name="MessageLabel"
+											Text="Message error!"
+											FontSize="18"
+											HorizontalOptions="Center"
+											HorizontalTextAlignment="Center"
+										/>
+                                        
+                                    </StackLayout>
+
+                            </Grid>
+                        </ScrollView>
+                    </grial:TabItem>
+
+                </grial:TabControl>
+            </Grid>
+            
+            <!-- CLOSE ICON -->
+            <Label
+				Style="{StaticResource IconCloseLabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+						Tapped="OnCloseButtonClicked" />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
