@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 using Java.Util;
 using UXDivers.Grial;
-
+using Acr.UserDialogs;
 
 namespace Eleos3.Droid
 {
@@ -80,7 +80,7 @@ namespace Eleos3.Droid
             _locale = Resources.Configuration.Locale;
 
             ReferenceCalendars();
-
+            UserDialogs.Init(this);
 
             LoadApplication(new App());
         }
