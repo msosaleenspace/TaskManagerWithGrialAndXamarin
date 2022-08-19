@@ -75,8 +75,10 @@
 					TabStripPlacement="Top"
 					TabStripBackgroundColor="{ DynamicResource BasePageColor}"
 					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }"
-					SelectedTabChanging="OnSelectedTabEvent">
-
+					SelectedTabChanging="OnSelectedTabEvent"
+					
+				>
+					
 					<grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
 						Text="Add Task">   
@@ -220,7 +222,9 @@
 					<!-- Get tasks TAB -->
                     <grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
-						Text="Get tasks">
+						Text="Get tasks"
+						Tapped="OnTappedTabEvent"
+						>
 
 						<ScrollView>
 

@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using System.Threading;
+using Acr.UserDialogs;
 
 namespace Eleos3
 {
@@ -43,6 +45,27 @@ namespace Eleos3
 
         private async void OnSelectedTabEvent(object sender, EventArgs args)
         {
+            /*UserDialogs.Instance.ShowLoading("Wait please...");
+
+            this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();*/
+
+            //TasksListView.ItemsSource = this.Tasks;
+
+            /*for (int index = 0; index < this.Tasks.Count; index++)
+            {
+                this.List.Add(this.Tasks[index]);
+            }
+
+            BindingContext = this;
+
+
+            UserDialogs.Instance.HideLoading();*/
+        }
+
+        private async void OnTappedTabEvent(object sender, EventArgs args)
+        {
+            UserDialogs.Instance.ShowLoading("Wait please...");
+
             this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();
 
             //TasksListView.ItemsSource = this.Tasks;
@@ -53,6 +76,9 @@ namespace Eleos3
             }
 
             BindingContext = this;
+
+
+            UserDialogs.Instance.HideLoading();
         }
 
         private async void OnAddTaskBtnClicked(object sender, EventArgs e)

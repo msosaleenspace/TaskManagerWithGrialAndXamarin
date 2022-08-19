@@ -19,6 +19,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
     <PackageReference Include="System.Text.Json" Version="6.0.5" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styles\" />
@@ -43,6 +44,7 @@
     <None Remove="Styles\curved_mask.svg" />
     <None Remove="Domain\" />
     <None Remove="System.Text.Json" />
+    <None Remove="Acr.UserDialogs" />
   </ItemGroup>
   <ItemGroup></ItemGroup>
   <ItemGroup>
