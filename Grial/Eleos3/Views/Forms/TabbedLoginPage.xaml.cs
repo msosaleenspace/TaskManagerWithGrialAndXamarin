@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using UXDivers.Grial;
 using Eleos3.ViewModels.DemoApp;
 using Eleos3.Domain;
+using Acr.UserDialogs;
 
 namespace Eleos3
 {
@@ -42,7 +43,9 @@ namespace Eleos3
         {
             if (!this.LoginInProcess)
             {
+                UserDialogs.Instance.ShowLoading("Wait please...");
                 this.LoginInProcess = await this.TabbedLoginPageViewModel.Login();
+                UserDialogs.Instance.HideLoading();
             }
         }
 
@@ -50,7 +53,9 @@ namespace Eleos3
         {
             if (!this.SignupInProcess)
             {
+                UserDialogs.Instance.ShowLoading("Wait please...");
                 this.SignupInProcess = await this.TabbedLoginPageViewModel.Signup();
+                UserDialogs.Instance.HideLoading();
             }
         }
 

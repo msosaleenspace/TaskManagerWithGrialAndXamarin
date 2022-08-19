@@ -74,10 +74,7 @@
 					Style="{ StaticResource SimpleTabStyle }"
 					TabStripPlacement="Top"
 					TabStripBackgroundColor="{ DynamicResource BasePageColor}"
-					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }"
-					SelectedTabChanging="OnSelectedTabEvent"
-					
-				>
+					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }"	>
 					
 					<grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
@@ -199,7 +196,7 @@
 										VerticalOptions="Center"
 										Text="Logout"
 										Style="{ StaticResource PrimaryActionButtonStyle }"
-										Clicked="OnDeleteTaskBtnClicked"/>
+										Clicked="OnLogoutBtnClicked"/>
                                 </StackLayout>
 
 								<StackLayout
@@ -223,7 +220,7 @@
                     <grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
 						Text="Get tasks"
-						Tapped="OnTappedTabEvent"
+						Tapped="OnTappedTabGetTasksEvent"
 						>
 
 						<ScrollView>

@@ -109,6 +109,7 @@ namespace Eleos3.ViewModels.DemoApp
 
         public async Task<bool> AddTask()
         {
+            this.AddTaskMessageLabel.Text = "";
             this.AddTaskInProcess = true;
 
             this.SetHttpEnvironment();
@@ -133,6 +134,10 @@ namespace Eleos3.ViewModels.DemoApp
                     this.TaskNameEntry.Text = "";
                     this.TaskDatePicker.Date = DateTime.Today;
                     this.AddTaskMessageLabel.Text = "Task added successfully!";
+                }
+                else if ((int)response.StatusCode == 400)
+                {
+                    this.AddTaskMessageLabel.Text = "Check your input data please.";
                 }
                 else
                 {

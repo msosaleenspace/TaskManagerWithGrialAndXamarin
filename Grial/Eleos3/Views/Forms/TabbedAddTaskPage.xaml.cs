@@ -43,26 +43,7 @@ namespace Eleos3
             await Navigation.PopModalAsync();
         }
 
-        private async void OnSelectedTabEvent(object sender, EventArgs args)
-        {
-            /*UserDialogs.Instance.ShowLoading("Wait please...");
-
-            this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();*/
-
-            //TasksListView.ItemsSource = this.Tasks;
-
-            /*for (int index = 0; index < this.Tasks.Count; index++)
-            {
-                this.List.Add(this.Tasks[index]);
-            }
-
-            BindingContext = this;
-
-
-            UserDialogs.Instance.HideLoading();*/
-        }
-
-        private async void OnTappedTabEvent(object sender, EventArgs args)
+        private async void OnTappedTabGetTasksEvent(object sender, EventArgs args)
         {
             UserDialogs.Instance.ShowLoading("Wait please...");
 
@@ -77,7 +58,6 @@ namespace Eleos3
 
             BindingContext = this;
 
-
             UserDialogs.Instance.HideLoading();
         }
 
@@ -85,15 +65,19 @@ namespace Eleos3
         {
             if (!this.AddTaskInProcess)
             {
+                UserDialogs.Instance.ShowLoading("Wait please...");
                 this.AddTaskInProcess = await this.TabbedAddTaskViewModel.AddTask();
+                UserDialogs.Instance.HideLoading();
             }
         }
 
-        private async void OnDeleteTaskBtnClicked(object sender, EventArgs e)
+        private async void OnLogoutBtnClicked(object sender, EventArgs e)
         {
             if (!this.LogoutInProcess)
             {
+                UserDialogs.Instance.ShowLoading("Wait please...");
                 this.LogoutInProcess = await this.TabbedAddTaskViewModel.Logout();
+                UserDialogs.Instance.HideLoading();
             }
 
         }
