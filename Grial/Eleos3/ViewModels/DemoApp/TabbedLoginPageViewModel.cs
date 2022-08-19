@@ -20,62 +20,33 @@ namespace Eleos3.ViewModels.DemoApp
 
         private JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-        private bool LoginInProcess { get; set; }
+        private TabbedLoginPageObjects TabbedLoginPageObjects { get; set; }
 
-        private Label MessageLabelLogin { get; set; }
-
-        private Entry EmailAddressEntryLogin { get; set; }
-
-        private Entry PasswordEntryLogin { get; set; }
-
-        private bool SignupInProcess { get; set; }
-
-        private Label MessageLabelSignup { get; set; }
-
-        private Entry EmailAddressEntrySignup { get; set; }
-
-        private Entry PasswordEntrySignup { get; set; }
-
-        public TabbedLoginPageViewModel(Label messageLabelLogin,
-            Entry emailAddressEntryLogin,
-            Entry passwordEntryLogin,
-            bool loginInProcess,
-            Label messageLabelSignup,
-            Entry emailAddressEntrySignup,
-            Entry passwordEntrySignup,
-            bool signupInProcess)
+        public TabbedLoginPageViewModel(TabbedLoginPageObjects tabbedLoginPageObjects)
         {
-            this.MessageLabelLogin = messageLabelLogin;
-            this.EmailAddressEntryLogin = emailAddressEntryLogin;
-            this.PasswordEntryLogin = passwordEntryLogin;
-            this.LoginInProcess = loginInProcess;
+            this.TabbedLoginPageObjects = tabbedLoginPageObjects;
 
-            this.MessageLabelSignup = messageLabelSignup;
-            this.EmailAddressEntrySignup = emailAddressEntrySignup;
-            this.PasswordEntrySignup = passwordEntrySignup;
-            this.SignupInProcess = signupInProcess;
-
-            this.MessageLabelLogin.Text = "";
-            this.MessageLabelSignup.Text = "";
+            this.TabbedLoginPageObjects.MessageLabelLogin.Text = "";
+            this.TabbedLoginPageObjects.MessageLabelSignup.Text = "";
         }
 
         public async Task<bool> Login()
         {
-            this.LoginInProcess = true;
-            this.MessageLabelLogin.Text = "";
+            this.TabbedLoginPageObjects.LoginInProcess = true;
+            this.TabbedLoginPageObjects.MessageLabelLogin.Text = "";
 
             this.SetHttpEnvironment();
 
-            string AnEmailAddress = EmailAddressEntryLogin.Text;
-            string Apassword = PasswordEntryLogin.Text;
+            string AnEmailAddress = this.TabbedLoginPageObjects.EmailAddressEntryLogin.Text;
+            string Apassword = this.TabbedLoginPageObjects.PasswordEntryLogin.Text;
 
             Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/login?email=" + AnEmailAddress + "&password=" + Apassword, string.Empty));
 
             try
             {
-                if (String.IsNullOrWhiteSpace(EmailAddressEntryLogin.Text) || String.IsNullOrWhiteSpace(PasswordEntryLogin.Text))
+                if (String.IsNullOrWhiteSpace(this.TabbedLoginPageObjects.EmailAddressEntryLogin.Text) || String.IsNullOrWhiteSpace(this.TabbedLoginPageObjects.PasswordEntryLogin.Text))
                 {
-                    this.MessageLabelLogin.Text = "Check your input data please!";
+                    this.TabbedLoginPageObjects.MessageLabelLogin.Text = "Check your input data please!";
                 }
                 else
                 {
@@ -91,47 +62,47 @@ namespace Eleos3.ViewModels.DemoApp
 
                         Preferences.Set("Token", sessionDTO.token);
                         Preferences.Set("UserId", sessionDTO.userId.ToString());
-                        this.MessageLabelLogin.Text = "You are now logged!";
+                        this.TabbedLoginPageObjects.MessageLabelLogin.Text = "You are now logged!";
                     }
                     else
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
                         var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
-                        this.MessageLabelLogin.Text = responseDTO.errorMessage;
+                        this.TabbedLoginPageObjects.MessageLabelLogin.Text = responseDTO.errorMessage;
                     }
                 }
             }
             catch (JsonException ex)
             {
-                this.MessageLabelLogin.Text = "Could not connect to server.";
+                this.TabbedLoginPageObjects.MessageLabelLogin.Text = "Could not connect to server.";
             }
             catch (Exception ex)
             {
-                this.MessageLabelLogin.Text = ex.GetType().ToString();
+                this.TabbedLoginPageObjects.MessageLabelLogin.Text = ex.GetType().ToString();
             }
 
-            this.LoginInProcess = false;
+            this.TabbedLoginPageObjects.LoginInProcess = false;
 
-            return this.LoginInProcess;
+            return this.TabbedLoginPageObjects.LoginInProcess;
         }
 
         public async Task<bool> Signup()
         {
-            this.MessageLabelSignup.Text = "";
-            this.SignupInProcess = true;
+            this.TabbedLoginPageObjects.MessageLabelSignup.Text = "";
+            this.TabbedLoginPageObjects.SignupInProcess = true;
 
             try
             {
-                if (String.IsNullOrWhiteSpace(this.EmailAddressEntrySignup.Text) || String.IsNullOrWhiteSpace(this.PasswordEntrySignup.Text))
+                if (String.IsNullOrWhiteSpace(this.TabbedLoginPageObjects.EmailAddressEntrySignup.Text) || String.IsNullOrWhiteSpace(this.TabbedLoginPageObjects.PasswordEntrySignup.Text))
                 {
-                    this.MessageLabelSignup.Text = "Check your input data please!";
+                    this.TabbedLoginPageObjects.MessageLabelSignup.Text = "Check your input data please!";
                 }
                 else
                 {
                     UserDTO userDTO = new UserDTO();
                     userDTO.id = 0;
-                    userDTO.emailAddress = this.EmailAddressEntrySignup.Text;
-                    userDTO.password = this.PasswordEntrySignup.Text;
+                    userDTO.emailAddress = this.TabbedLoginPageObjects.EmailAddressEntrySignup.Text;
+                    userDTO.password = this.TabbedLoginPageObjects.PasswordEntrySignup.Text;
 
                     this.SetHttpEnvironment();
                     Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/users", string.Empty));
@@ -145,30 +116,30 @@ namespace Eleos3.ViewModels.DemoApp
 
                     if (response.IsSuccessStatusCode)
                     {
-                        this.EmailAddressEntrySignup.Text = "";
-                        this.PasswordEntrySignup.Text = "";
-                        this.MessageLabelSignup.Text = "User created succesfully!";
+                        this.TabbedLoginPageObjects.EmailAddressEntrySignup.Text = "";
+                        this.TabbedLoginPageObjects.PasswordEntrySignup.Text = "";
+                        this.TabbedLoginPageObjects.MessageLabelSignup.Text = "User created succesfully!";
                     }
                     else
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
                         var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
-                        this.MessageLabelSignup.Text = responseDTO.errorMessage;
+                        this.TabbedLoginPageObjects.MessageLabelSignup.Text = responseDTO.errorMessage;
                     }
                 }
             }
             catch (JsonException ex)
             {
-                this.MessageLabelSignup.Text = "Could not connect to server";
+                this.TabbedLoginPageObjects.MessageLabelSignup.Text = "Could not connect to server";
             }
             catch (Exception ex)
             {
-                this.MessageLabelSignup.Text = ex.Message;
+                this.TabbedLoginPageObjects.MessageLabelSignup.Text = ex.Message;
             }
 
-            this.SignupInProcess = false;
+            this.TabbedLoginPageObjects.SignupInProcess = false;
 
-            return this.SignupInProcess;
+            return this.TabbedLoginPageObjects.SignupInProcess;
         }
 
         private void SetHttpEnvironment()

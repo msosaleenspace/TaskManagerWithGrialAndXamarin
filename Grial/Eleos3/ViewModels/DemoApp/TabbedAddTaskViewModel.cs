@@ -46,18 +46,20 @@ namespace Eleos3.ViewModels.DemoApp
 
                 if (response.IsSuccessStatusCode)
                 {
+                    int j = 5;
                     Preferences.Set("Token", "");
                     Preferences.Set("UserId", "");
                     MessageLabel.Text = "Logout successful!";
-                    int j = 1;
+                }
+                else if (((int)response.StatusCode) == 400)
+                {
+                    MessageLabel.Text = "No token found!";
                 }
                 else
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
                     MessageLabel.Text = responseDTO.errorMessage;
-                    int k = 1;
-
                 }
             }
             catch (JsonException ex)

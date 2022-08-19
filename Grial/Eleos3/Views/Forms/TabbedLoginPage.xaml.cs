@@ -2,6 +2,7 @@ using System;
 using Xamarin.Forms;
 using UXDivers.Grial;
 using Eleos3.ViewModels.DemoApp;
+using Eleos3.Domain;
 
 namespace Eleos3
 {
@@ -17,18 +18,19 @@ namespace Eleos3
         public TabbedLoginPage()
         {
             InitializeComponent();
-            this.TabbedLoginPageViewModel = new TabbedLoginPageViewModel(this.MessageLabelLogin,
-                this.EmailAddressEntryLogin,
-                this.PasswordEntryLogin,
-                this.LoginInProcess,
 
-                this.MessageLabelSignup,
-                this.EmailAddressEntrySignup,
-                this.PasswordEntrySignup,
-                this.SignupInProcess
+            TabbedLoginPageObjects tabbedLoginPageObjects = new TabbedLoginPageObjects();
 
-                );
+            tabbedLoginPageObjects.LoginInProcess = this.LoginInProcess;
+            tabbedLoginPageObjects.MessageLabelLogin = this.MessageLabelLogin;
+            tabbedLoginPageObjects.EmailAddressEntryLogin = this.EmailAddressEntryLogin;
+            tabbedLoginPageObjects.PasswordEntryLogin = this.PasswordEntryLogin;
+            tabbedLoginPageObjects.SignupInProcess = this.SignupInProcess;
+            tabbedLoginPageObjects.MessageLabelSignup = this.MessageLabelSignup;
+            tabbedLoginPageObjects.EmailAddressEntrySignup = this.EmailAddressEntrySignup;
+            tabbedLoginPageObjects.PasswordEntrySignup = this.PasswordEntrySignup;
 
+            this.TabbedLoginPageViewModel = new TabbedLoginPageViewModel(tabbedLoginPageObjects);
         }
 
         private async void OnCloseButtonClicked(object sender, EventArgs args)
@@ -42,7 +44,6 @@ namespace Eleos3
             {
                 this.LoginInProcess = await this.TabbedLoginPageViewModel.Login();
             }
-
         }
 
         private async void OnSignupBtnClicked(object sender, EventArgs e)

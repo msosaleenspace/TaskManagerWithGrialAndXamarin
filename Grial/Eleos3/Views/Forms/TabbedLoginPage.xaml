@@ -73,7 +73,6 @@
 					TabStripPlacement="Top"
 					TabStripBackgroundColor="{ DynamicResource BasePageColor}"
 					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }"
-
 					SelectedTabChanging="OnTabChangingEvent">
 					
                     <!-- LOGIN TAB -->
