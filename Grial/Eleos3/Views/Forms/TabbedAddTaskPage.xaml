@@ -109,7 +109,8 @@
                                         <Entry
 											Placeholder="Name"
 											VerticalOptions="Center"
-											HorizontalOptions="FillAndExpand" />
+											HorizontalOptions="FillAndExpand"
+											x:Name="TaskNameEntry"/>
                                         
                                     </StackLayout>
 
@@ -125,24 +126,24 @@
 											FontFamily="{ StaticResource IconsFontFamily }"
 											TextColor="{ DynamicResource BaseTextColor }" />
 
-                                        <DatePicker HorizontalOptions="FillAndExpand">
+                                        <DatePicker HorizontalOptions="FillAndExpand" x:Name="TaskDatePicker">
 
 										</DatePicker>
 
                                     </StackLayout>
 
 
-								<!--	<StackLayout
+									<StackLayout
 										Spacing="14">
                                         <Label
-											x:Name="MessageLabel"
-											Text="Message error!"
+											x:Name="AddTaskMessageLabel"
+											Text=""
 											FontSize="18"
 											HorizontalOptions="Center"
 											HorizontalTextAlignment="Center"
 										/>
                                         
-                                    </StackLayout> -->
+                                    </StackLayout> 
 
                                 </StackLayout>
 
@@ -155,6 +156,7 @@
 									Margin="0,30,0,0">
                                     <!-- Primary Button -->
                                     <Button
+										Clicked="OnAddTaskBtnClicked"
 										HeightRequest="44"
 										VerticalOptions="Center"
 										Text="Confirm"
@@ -201,8 +203,8 @@
 										Grid.Row="1"
 										Spacing="0">
                                         <Label
-											x:Name="MessageLabel"
-											Text="Message error!"
+											x:Name="LogoutMessageLabel"
+											Text=""
 											FontSize="18"
 											HorizontalOptions="Center"
 											HorizontalTextAlignment="Center"

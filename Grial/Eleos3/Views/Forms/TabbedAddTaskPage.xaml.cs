@@ -12,11 +12,17 @@ namespace Eleos3
 
         private bool LogoutInProcess = false;
 
+        private bool AddTaskInProcess = false;
+
         public TabbedAddTaskPage()
         {
             InitializeComponent();
-            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.MessageLabel,
-                this.LogoutInProcess);
+            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.LogoutMessageLabel,
+                this.LogoutInProcess,
+                this.AddTaskMessageLabel,
+                this.AddTaskInProcess,
+                this.TaskNameEntry,
+                this.TaskDatePicker);
         }
 
         private async void OnCloseButtonClicked(object sender, EventArgs args)
@@ -24,11 +30,20 @@ namespace Eleos3
             await Navigation.PopModalAsync();
         }
 
+        private async void OnAddTaskBtnClicked(object sender, EventArgs e)
+        {
+            if (!this.AddTaskInProcess)
+            {
+                this.AddTaskInProcess = await this.TabbedAddTaskViewModel.AddTask();
+            }
+
+        }
+
         private async void OnDeleteTaskBtnClicked(object sender, EventArgs e)
         {
             if (!this.LogoutInProcess)
             {
-                this.LogoutInProcess = await this.TabbedAddTaskViewModel.Logout(this.MessageLabel);
+                this.LogoutInProcess = await this.TabbedAddTaskViewModel.Logout();
             }
 
         }

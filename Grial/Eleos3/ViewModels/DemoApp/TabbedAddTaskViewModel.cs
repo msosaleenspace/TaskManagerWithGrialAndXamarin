@@ -22,16 +22,35 @@ namespace Eleos3.ViewModels.DemoApp
 
         private bool LogoutInProcess { get; set; }
 
-        public TabbedAddTaskViewModel(Label MessageLabel, bool logoutInProcess)
+        private Label LogoutMessageLabel { get; set; }
+
+        private bool AddTaskInProcess { get; set; }
+
+        private Label AddTaskMessageLabel { get; set; }
+
+        private Entry TaskNameEntry { get; set; }
+
+        private DatePicker TaskDatePicker { get; set; }
+
+        public TabbedAddTaskViewModel(Label logoutMessageLabel,
+            bool logoutInProcess,
+            Label addTaskMessageLabel,
+            bool addTaskInProcess,
+            Entry taskNameEntry,
+            DatePicker taskDatePicker)
         {
-            MessageLabel.Text = "";
+            this.LogoutMessageLabel = logoutMessageLabel;
             this.LogoutInProcess = logoutInProcess;
+            this.AddTaskMessageLabel = addTaskMessageLabel;
+            this.AddTaskInProcess = addTaskInProcess;
+            this.TaskNameEntry = taskNameEntry;
+            this.TaskDatePicker = taskDatePicker;
         }
 
-        public async Task<bool> Logout(Label MessageLabel)
+        public async Task<bool> Logout()
         {
             this.LogoutInProcess = true;
-            MessageLabel.Text = "";
+            this.LogoutMessageLabel.Text = "";
 
             this.SetHttpEnvironment();
             Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/logout", string.Empty));
@@ -49,26 +68,26 @@ namespace Eleos3.ViewModels.DemoApp
                     int j = 5;
                     Preferences.Set("Token", "");
                     Preferences.Set("UserId", "");
-                    MessageLabel.Text = "Logout successful!";
+                    this.LogoutMessageLabel.Text = "Logout successful!";
                 }
                 else if (((int)response.StatusCode) == 400)
                 {
-                    MessageLabel.Text = "No token found!";
+                    this.LogoutMessageLabel.Text = "No token found!";
                 }
                 else
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
-                    MessageLabel.Text = responseDTO.errorMessage;
+                    this.LogoutMessageLabel.Text = responseDTO.errorMessage;
                 }
             }
             catch (JsonException ex)
             {
-                MessageLabel.Text = "Could not connect to server.";
+                this.LogoutMessageLabel.Text = "Could not connect to server.";
             }
             catch (Exception ex)
             {
-                MessageLabel.Text = ex.Message;
+                this.LogoutMessageLabel.Text = ex.Message;
             }
 
             this.LogoutInProcess = false;
@@ -86,5 +105,80 @@ namespace Eleos3.ViewModels.DemoApp
             };
         }
 
+        public async Task<bool> AddTask()
+        {
+            this.AddTaskInProcess = true;
+
+            this.SetHttpEnvironment();
+            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/tasks", string.Empty));
+
+            try
+            {
+                UserDTO userDTO = this.CreateUserDTO();
+                TodoTaskDTO todoTaskDTO = this.CreateTodoTaskDTO(userDTO);
+
+                string json = System.Text.Json.JsonSerializer.Serialize<TodoTaskDTO>(todoTaskDTO, this.JsonSerializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+
+                this.HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
+
+                response = await this.HttpClient.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    this.TaskNameEntry.Text = "";
+                    this.TaskDatePicker.Date = DateTime.Today;
+                    this.AddTaskMessageLabel.Text = "Task added successfully!";
+                }
+                else
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
+                    this.AddTaskMessageLabel.Text = responseDTO.errorMessage;
+                }
+
+            }
+            catch (NullReferenceException ex)
+            {
+                this.AddTaskMessageLabel.Text = "Check your input data please.";
+            }
+            catch (JsonException ex)
+            {
+                this.AddTaskMessageLabel.Text = "Could not connect to server.";
+            }
+            catch (Exception ex)
+            {
+                this.AddTaskMessageLabel.Text = ex.Message;
+            }
+
+            this.AddTaskInProcess = false;
+
+            return this.AddTaskInProcess;
+        }
+
+        private UserDTO CreateUserDTO()
+        {
+            UserDTO userDTO = new UserDTO();
+            userDTO.id = Int32.Parse(Preferences.Get("UserId", ""));
+            userDTO.emailAddress = "";
+            userDTO.password = "";
+
+            return userDTO;
+        }
+
+        private TodoTaskDTO CreateTodoTaskDTO(UserDTO userDTO)
+        {
+            TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
+            todoTaskDTO.id = 0;
+            todoTaskDTO.name = this.TaskNameEntry.Text;
+            todoTaskDTO.date = new DateTime(this.TaskDatePicker.Date.Year, this.TaskDatePicker.Date.Month, this.TaskDatePicker.Date.Day);
+            todoTaskDTO.user = userDTO;
+
+            return todoTaskDTO;
+        }
+
     }
+
 }
