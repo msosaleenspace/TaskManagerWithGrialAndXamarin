@@ -12,8 +12,6 @@ namespace Eleos3.Domain
 
         public UserDTO user { get; set; }
 
-        public string todoTaskData { get { return this.id + " - " + this.name.ToString(); } }
-
         public TodoTaskDTO()
         {
 

@@ -2,6 +2,13 @@ using System;
 using Xamarin.Forms;
 using UXDivers.Grial;
 using Eleos3.ViewModels.DemoApp;
+using Eleos3.Domain;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace Eleos3
 {
@@ -13,6 +20,10 @@ namespace Eleos3
         private bool LogoutInProcess = false;
 
         private bool AddTaskInProcess = false;
+
+        public List<TodoTaskDTO> Tasks { get; set; }
+
+        public ObservableCollection<TodoTaskDTO> List { get; } = new ObservableCollection<TodoTaskDTO>();
 
         public TabbedAddTaskPage()
         {
@@ -30,13 +41,26 @@ namespace Eleos3
             await Navigation.PopModalAsync();
         }
 
+        private async void OnSelectedTabEvent(object sender, EventArgs args)
+        {
+            this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();
+
+            //TasksListView.ItemsSource = this.Tasks;
+
+            for (int index = 0; index < this.Tasks.Count; index++)
+            {
+                this.List.Add(this.Tasks[index]);
+            }
+
+            BindingContext = this;
+        }
+
         private async void OnAddTaskBtnClicked(object sender, EventArgs e)
         {
             if (!this.AddTaskInProcess)
             {
                 this.AddTaskInProcess = await this.TabbedAddTaskViewModel.AddTask();
             }
-
         }
 
         private async void OnDeleteTaskBtnClicked(object sender, EventArgs e)

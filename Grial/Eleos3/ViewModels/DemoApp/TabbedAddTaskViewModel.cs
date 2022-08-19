@@ -9,6 +9,8 @@ using Eleos3.Domain;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using JsonException = System.Text.Json.JsonException;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Eleos3.ViewModels.DemoApp
 {
@@ -177,6 +179,37 @@ namespace Eleos3.ViewModels.DemoApp
             todoTaskDTO.user = userDTO;
 
             return todoTaskDTO;
+        }
+
+
+        public async Task<List<TodoTaskDTO>> GetTasks()
+        {
+            List<TodoTaskDTO> todoTasksDTO = new List<TodoTaskDTO>();
+            this.SetHttpEnvironment();
+
+            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/tasks", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = null;
+
+                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
+
+                response = await HttpClient.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    todoTasksDTO = System.Text.Json.JsonSerializer.Deserialize<List<TodoTaskDTO>>(content, JsonSerializerOptions);
+                    int j = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
+            return todoTasksDTO;
         }
 
     }

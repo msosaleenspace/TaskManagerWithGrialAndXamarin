@@ -74,7 +74,8 @@
 					Style="{ StaticResource SimpleTabStyle }"
 					TabStripPlacement="Top"
 					TabStripBackgroundColor="{ DynamicResource BasePageColor}"
-					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }">
+					TabContentBackgroundColor="{ DynamicResource MainWrapperBackgroundColor }"
+					SelectedTabChanging="OnSelectedTabEvent">
 
 					<grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
@@ -216,7 +217,75 @@
                         </ScrollView>
                     </grial:TabItem>
 
-                </grial:TabControl>
+					<!-- Get tasks TAB -->
+                    <grial:TabItem
+						IconText="{ x:Static local:GrialIconsFont.Camera }"
+						Text="Get tasks">
+
+						<ScrollView>
+
+							<ListView
+								CachingStrategy="RecycleElement"
+								SeparatorVisibility="Default"
+								ItemsSource="{ Binding List }"
+								HasUnevenRows="false"
+								RowHeight="140">
+								<ListView.ItemTemplate>
+									<DataTemplate>
+										<ViewCell>
+											<Grid
+												RowSpacing="5"
+												ColumnSpacing="10"
+												Padding="14"
+												BackgroundColor="{ DynamicResource BasePageColor }">
+        
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition
+														Width="100" />
+												</Grid.ColumnDefinitions>
+
+												<Grid.RowDefinitions>
+													<RowDefinition
+														Height="24" />
+													<RowDefinition
+														Height="16" />
+													<RowDefinition
+														Height="*" />
+												</Grid.RowDefinitions>
+
+												<Label
+													Grid.Row="0"
+													Grid.Column="0"
+													Text="{ Binding id }"
+													Style="{ StaticResource LabelBoldStyle }"
+													FontSize="18"
+													LineBreakMode="TailTruncation"
+													TextColor="{ DynamicResource AccentColor }" />
+            
+												<Label
+													Grid.Row="1"
+													Grid.Column="0"
+													Text="{ Binding name }"
+													Opacity=".7"
+													FontSize="12" />
+        
+												<Label
+													Grid.Row="2"
+													Grid.Column="0"
+													Text="{ Binding date }"
+													FontSize="{ grial:OnOrientationDouble 
+														PortraitPhone=12,
+														LandscapePhone=12,
+														PortraitTablet=14,
+														LandscapeTablet=14 }" />
+											</Grid>
+										</ViewCell>
+									</DataTemplate>
+								</ListView.ItemTemplate>
+							</ListView>
+						 </ScrollView>
+					</grial:TabItem>
+				</grial:TabControl>
             </Grid>
             
             <!-- CLOSE ICON -->
