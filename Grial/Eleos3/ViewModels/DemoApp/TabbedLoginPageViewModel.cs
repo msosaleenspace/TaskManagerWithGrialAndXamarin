@@ -22,12 +22,19 @@ namespace Eleos3.ViewModels.DemoApp
 
         private TabbedLoginPageObjects TabbedLoginPageObjects { get; set; }
 
+        private Label LogoutMessageLabel { get; set; }
+
+        private bool LogoutInProcess { get; set; }
+
         public TabbedLoginPageViewModel(TabbedLoginPageObjects tabbedLoginPageObjects)
         {
             this.TabbedLoginPageObjects = tabbedLoginPageObjects;
 
             this.TabbedLoginPageObjects.MessageLabelLogin.Text = "";
             this.TabbedLoginPageObjects.MessageLabelSignup.Text = "";
+            this.LogoutMessageLabel = this.TabbedLoginPageObjects.LogoutMessageLabel;
+            this.LogoutInProcess = this.TabbedLoginPageObjects.LogoutInProcess;
+
         }
 
         public async Task<bool> Login()
@@ -150,6 +157,53 @@ namespace Eleos3.ViewModels.DemoApp
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
+        }
+
+        public async Task<bool> Logout()
+        {
+            this.LogoutInProcess = true;
+            this.LogoutMessageLabel.Text = "";
+
+            this.SetHttpEnvironment();
+            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/logout", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = null;
+
+                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
+
+                response = await HttpClient.DeleteAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Preferences.Set("Token", "");
+                    Preferences.Set("UserId", "");
+                    this.LogoutMessageLabel.Text = "Logout successful!";
+                }
+                else if (((int)response.StatusCode) == 400)
+                {
+                    this.LogoutMessageLabel.Text = "No token found!";
+                }
+                else
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
+                    this.LogoutMessageLabel.Text = responseDTO.errorMessage;
+                }
+            }
+            catch (JsonException ex)
+            {
+                this.LogoutMessageLabel.Text = "Could not connect to server.";
+            }
+            catch (Exception ex)
+            {
+                this.LogoutMessageLabel.Text = ex.Message;
+            }
+
+            this.LogoutInProcess = false;
+
+            return this.LogoutInProcess;
         }
 
     }

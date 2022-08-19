@@ -14,6 +14,8 @@ namespace Eleos3
 
         private bool LoginInProcess = false;
 
+        private bool LogoutInProcess = false;
+
         private bool SignupInProcess = false;
 
         public TabbedLoginPage()
@@ -30,6 +32,8 @@ namespace Eleos3
             tabbedLoginPageObjects.MessageLabelSignup = this.MessageLabelSignup;
             tabbedLoginPageObjects.EmailAddressEntrySignup = this.EmailAddressEntrySignup;
             tabbedLoginPageObjects.PasswordEntrySignup = this.PasswordEntrySignup;
+            tabbedLoginPageObjects.LogoutInProcess = this.LogoutInProcess;
+            tabbedLoginPageObjects.LogoutMessageLabel = this.LogoutMessageLabel;
 
             this.TabbedLoginPageViewModel = new TabbedLoginPageViewModel(tabbedLoginPageObjects);
         }
@@ -67,6 +71,18 @@ namespace Eleos3
             this.MessageLabelSignup.Text = "";
             this.EmailAddressEntrySignup.Text = "";
             this.PasswordEntrySignup.Text = "";
+            this.LogoutMessageLabel.Text = "";
+        }
+
+        private async void OnLogoutBtnClicked(object sender, EventArgs e)
+        {
+            if (!this.LogoutInProcess)
+            {
+                UserDialogs.Instance.ShowLoading("Wait please...");
+                this.LogoutInProcess = await this.TabbedLoginPageViewModel.Logout();
+                UserDialogs.Instance.HideLoading();
+            }
+
         }
 
     }

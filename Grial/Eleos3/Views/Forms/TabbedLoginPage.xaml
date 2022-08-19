@@ -280,6 +280,54 @@
                         
                     </grial:TabItem>
 
+					<!-- LOGOUT TAB -->
+                    <grial:TabItem
+						IconText="{ x:Static local:GrialIconsFont.Camera }"
+						Text="Logout">
+                        <ScrollView>
+                            <Grid
+								Padding="20,0,20,0"
+								Style="{ StaticResource ResponsiveLandscapeMarginStyle }"
+								RowSpacing="10"
+								VerticalOptions="Center">
+                                
+								<Grid.RowDefinitions>
+                                    <RowDefinition
+										Height="*" />
+                                    <RowDefinition
+										Height="*" />
+                                </Grid.RowDefinitions>
+                                
+                                <StackLayout
+									Grid.Row="0"
+									Spacing="0"
+									VerticalOptions="Center"
+									Margin="0,0,0,0">
+                                    <Button 
+										HeightRequest="44"
+										VerticalOptions="Center"
+										Text="Logout"
+										Style="{ StaticResource PrimaryActionButtonStyle }"
+										Clicked="OnLogoutBtnClicked"/>
+                                </StackLayout>
+
+								<StackLayout
+										Grid.Row="1"
+										Spacing="0">
+                                        <Label
+											x:Name="LogoutMessageLabel"
+											Text=""
+											FontSize="18"
+											HorizontalOptions="Center"
+											HorizontalTextAlignment="Center"
+										/>
+                                        
+                                    </StackLayout>
+
+                            </Grid>
+                        </ScrollView>
+                    </grial:TabItem>
+
                 </grial:TabControl>
             </Grid>
             

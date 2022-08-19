@@ -22,6 +22,10 @@ namespace Eleos3.Domain
 
         public Entry PasswordEntrySignup { get; set; }
 
+        public Label LogoutMessageLabel { get; set; }
+
+        public bool LogoutInProcess { get; set; }
+
         public TabbedLoginPageObjects()
 		{
 		}

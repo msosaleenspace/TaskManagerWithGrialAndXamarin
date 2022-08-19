@@ -30,8 +30,7 @@ namespace Eleos3
         public TabbedAddTaskPage()
         {
             InitializeComponent();
-            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.LogoutMessageLabel,
-                this.LogoutInProcess,
+            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(
                 this.AddTaskMessageLabel,
                 this.AddTaskInProcess,
                 this.TaskNameEntry,
@@ -71,15 +70,11 @@ namespace Eleos3
             }
         }
 
-        private async void OnLogoutBtnClicked(object sender, EventArgs e)
+        private void OnTabChangingEvent(object sender, EventArgs e)
         {
-            if (!this.LogoutInProcess)
-            {
-                UserDialogs.Instance.ShowLoading("Wait please...");
-                this.LogoutInProcess = await this.TabbedAddTaskViewModel.Logout();
-                UserDialogs.Instance.HideLoading();
-            }
-
+            this.TaskNameEntry.Text = "";
+            this.TaskDatePicker.Date = DateTime.Today;
+            this.AddTaskMessageLabel.Text = "";
         }
 
     }

@@ -22,10 +22,6 @@ namespace Eleos3.ViewModels.DemoApp
 
         private JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-        private bool LogoutInProcess { get; set; }
-
-        private Label LogoutMessageLabel { get; set; }
-
         private bool AddTaskInProcess { get; set; }
 
         private Label AddTaskMessageLabel { get; set; }
@@ -34,67 +30,15 @@ namespace Eleos3.ViewModels.DemoApp
 
         private DatePicker TaskDatePicker { get; set; }
 
-        public TabbedAddTaskViewModel(Label logoutMessageLabel,
-            bool logoutInProcess,
-            Label addTaskMessageLabel,
+        public TabbedAddTaskViewModel(Label addTaskMessageLabel,
             bool addTaskInProcess,
             Entry taskNameEntry,
             DatePicker taskDatePicker)
         {
-            this.LogoutMessageLabel = logoutMessageLabel;
-            this.LogoutInProcess = logoutInProcess;
             this.AddTaskMessageLabel = addTaskMessageLabel;
             this.AddTaskInProcess = addTaskInProcess;
             this.TaskNameEntry = taskNameEntry;
             this.TaskDatePicker = taskDatePicker;
-        }
-
-        public async Task<bool> Logout()
-        {
-            this.LogoutInProcess = true;
-            this.LogoutMessageLabel.Text = "";
-
-            this.SetHttpEnvironment();
-            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/logout", string.Empty));
-
-            try
-            {
-                HttpResponseMessage response = null;
-
-                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
-
-                response = await HttpClient.DeleteAsync(uri);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    int j = 5;
-                    Preferences.Set("Token", "");
-                    Preferences.Set("UserId", "");
-                    this.LogoutMessageLabel.Text = "Logout successful!";
-                }
-                else if (((int)response.StatusCode) == 400)
-                {
-                    this.LogoutMessageLabel.Text = "No token found!";
-                }
-                else
-                {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
-                    this.LogoutMessageLabel.Text = responseDTO.errorMessage;
-                }
-            }
-            catch (JsonException ex)
-            {
-                this.LogoutMessageLabel.Text = "Could not connect to server.";
-            }
-            catch (Exception ex)
-            {
-                this.LogoutMessageLabel.Text = ex.Message;
-            }
-
-            this.LogoutInProcess = false;
-
-            return this.LogoutInProcess;
         }
 
         private void SetHttpEnvironment()
