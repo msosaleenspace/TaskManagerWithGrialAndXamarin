@@ -22,9 +22,10 @@ namespace Eleos3.ViewModels.DemoApp
 
         private bool LogoutInProcess { get; set; }
 
-        public TabbedAddTaskViewModel(Label MessageLabel)
+        public TabbedAddTaskViewModel(Label MessageLabel, bool logoutInProcess)
         {
             MessageLabel.Text = "";
+            this.LogoutInProcess = logoutInProcess;
         }
 
         public async Task<bool> Logout(Label MessageLabel)
@@ -39,7 +40,7 @@ namespace Eleos3.ViewModels.DemoApp
             {
                 HttpResponseMessage response = null;
 
-                HttpClient.DefaultRequestHeaders.Add("token", "bjghjghjhhvg"/*Preferences.Get("Token", "")*/);
+                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
 
                 response = await HttpClient.DeleteAsync(uri);
 

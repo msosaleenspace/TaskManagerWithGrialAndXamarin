@@ -90,10 +90,15 @@
 										Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <StackLayout
+                                
+									
+                                    
+                               <StackLayout
 									Grid.Row="0"
 									VerticalOptions="Center"
 									Spacing="20">
+                                   
+
                                     <!-- Email -->
                                     <StackLayout
 										Orientation="Horizontal"
@@ -107,9 +112,12 @@
 											TextColor="{ DynamicResource BaseTextColor }" />
 
                                         <Entry
-											Placeholder="{ grial:Translate StringEmail }"
+											x:Name="EmailAddressEntryLogin"
+											Placeholder="Email"
 											VerticalOptions="Center"
-											HorizontalOptions="FillAndExpand" />
+											HorizontalOptions="FillAndExpand"
+											IsTextPredictionEnabled="False"
+											Keyboard="Plain"/>
                                     </StackLayout>
 
                                     <!-- Password -->
@@ -125,37 +133,54 @@
 											TextColor="{ DynamicResource BaseTextColor }" />
 
                                         <Entry
-											Placeholder="{ grial:Translate StringPassword }"
+											IsPassword="true"
+											x:Name="PasswordEntryLogin"
+											Placeholder="Password"
 											VerticalOptions="Center"
 											HorizontalOptions="FillAndExpand" />
+                                        
                                     </StackLayout>
-                                    
-                                    
-                                    
-                                </StackLayout>
 
+
+
+									<StackLayout
+										Spacing="0">
+                                        <Label
+											x:Name="MessageLabelLogin"
+											Text=""
+											FontSize="18"
+											HorizontalOptions="Center"
+											HorizontalTextAlignment="Center"
+										/>
+                                        
+                                    </StackLayout>
+
+
+                                </StackLayout>
 
                                 <StackLayout
 									Grid.Row="1"
 									Spacing="14"
-									VerticalOptions="End">
+									VerticalOptions="End"
+									Margin="0,0,0,0">
                                     <!-- Primary Button -->
                                     <Button
+										Clicked="OnLoginBtnClicked"
 										HeightRequest="44"
 										VerticalOptions="Center"
 										Text="Login"
 										Style="{ StaticResource PrimaryActionButtonStyle }" />
 
-                                    
-
-                                    <!-- Line -->
+									 <!-- Line -->
                                     <BoxView
 										VerticalOptions="Center"
 										HorizontalOptions="Fill"
 										Style="{ StaticResource Horizontal1ptLineStyle }" />
 
-                                   
                                 </StackLayout>
+
+
+                               
 
                             </Grid>
                         </ScrollView>
@@ -195,6 +220,9 @@
 											TextColor="{ DynamicResource BaseTextColor }" />
 
                                         <Entry
+											IsTextPredictionEnabled="False"
+											Keyboard="Plain"
+											x:Name="EmailAddressEntrySignup"
 											Placeholder="Email"
 											VerticalOptions="Center"
 											HorizontalOptions="FillAndExpand" />
@@ -213,13 +241,26 @@
 											TextColor="{ DynamicResource BaseTextColor }" />
 
                                         <Entry
+											IsPassword="true"
+											x:Name="PasswordEntrySignup"
 											Placeholder="Password"
 											VerticalOptions="Center"
 											HorizontalOptions="FillAndExpand" />
                                         
                                     </StackLayout>
 
-                                   
+									<StackLayout
+										Spacing="0">
+                                        <Label
+											x:Name="MessageLabelSignup"
+											Text=""
+											FontSize="18"
+											HorizontalOptions="Center"
+											HorizontalTextAlignment="Center"
+										/>
+                                        
+                                    </StackLayout>
+
                                 </StackLayout>
 
                                 <StackLayout
@@ -229,6 +270,7 @@
 									Margin="0,0,0,0">
                                     <!-- Primary Button -->
                                     <Button
+										Clicked="OnSignupBtnClicked"
 										HeightRequest="44"
 										VerticalOptions="Center"
 										Text="Sign Up"

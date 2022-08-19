@@ -15,7 +15,8 @@ namespace Eleos3
         public TabbedAddTaskPage()
         {
             InitializeComponent();
-            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.MessageLabel);
+            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.MessageLabel,
+                this.LogoutInProcess);
         }
 
         private async void OnCloseButtonClicked(object sender, EventArgs args)

@@ -131,7 +131,22 @@
 
                                     </StackLayout>
 
+
+								<!--	<StackLayout
+										Spacing="14">
+                                        <Label
+											x:Name="MessageLabel"
+											Text="Message error!"
+											FontSize="18"
+											HorizontalOptions="Center"
+											HorizontalTextAlignment="Center"
+										/>
+                                        
+                                    </StackLayout> -->
+
                                 </StackLayout>
+
+								
 
                                 <StackLayout
 									Grid.Row="1"
