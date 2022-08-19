@@ -51,7 +51,16 @@ namespace Eleos3
             {
                 this.SignupInProcess = await this.TabbedLoginPageViewModel.Signup();
             }
+        }
 
+        private void OnTabChangingEvent(object sender, EventArgs e)
+        {
+            this.MessageLabelLogin.Text = "";
+            this.EmailAddressEntryLogin.Text = "";
+            this.PasswordEntryLogin.Text = "";
+            this.MessageLabelSignup.Text = "";
+            this.EmailAddressEntrySignup.Text = "";
+            this.PasswordEntrySignup.Text = "";
         }
 
     }
