@@ -162,6 +162,13 @@
 										VerticalOptions="Center"
 										Text="Confirm"
 										Style="{ StaticResource PrimaryActionButtonStyle }" />
+
+									 <!-- Line -->
+                                    <BoxView
+										VerticalOptions="Center"
+										HorizontalOptions="Fill"
+										Style="{ StaticResource Horizontal1ptLineStyle }" />
+
                                 </StackLayout>
 
                             </Grid>
