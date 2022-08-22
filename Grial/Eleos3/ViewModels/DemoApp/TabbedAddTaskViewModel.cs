@@ -83,16 +83,6 @@ namespace Eleos3.ViewModels.DemoApp
             this.TaskIdEntryOnDelete = taskIdEntryOnDelete;
         }
 
-        private void SetHttpEnvironment()
-        {
-            this.HttpClient = new HttpClient();
-            this.JsonSerializerOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
-        }
-
         public async Task<bool> AddTask()
         {
             this.AddTaskMessageLabel.Text = "";
@@ -149,68 +139,6 @@ namespace Eleos3.ViewModels.DemoApp
             this.AddTaskInProcess = false;
 
             return this.AddTaskInProcess;
-        }
-
-        private UserDTO CreateUserDTO()
-        {
-            UserDTO userDTO = new UserDTO();
-            userDTO.id = Int32.Parse(Preferences.Get("UserId", ""));
-            userDTO.emailAddress = "";
-            userDTO.password = "";
-
-            return userDTO;
-        }
-
-        private TodoTaskDTO CreateTodoTaskDTOOnAddTask(UserDTO userDTO)
-        {
-            TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
-            todoTaskDTO.id = 0;
-            todoTaskDTO.name = this.TaskNameEntry.Text;
-            todoTaskDTO.date = new DateTime(this.TaskDatePicker.Date.Year, this.TaskDatePicker.Date.Month, this.TaskDatePicker.Date.Day);
-            todoTaskDTO.user = userDTO;
-
-            return todoTaskDTO;
-        }
-
-        private TodoTaskDTO CreateTodoTaskDTOOnUpdateTask(UserDTO userDTO)
-        {
-            TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
-            todoTaskDTO.id = Int32.Parse(this.TaskIdEntryOnUpdate.Text);
-            todoTaskDTO.name = this.TaskNameEntryOnUpdate.Text;
-            todoTaskDTO.date = this.TaskDatePickerOnUpdate.Date;
-            todoTaskDTO.user = userDTO;
-
-            return todoTaskDTO;
-        }
-
-        public async Task<List<TodoTaskDTO>> GetTasks()
-        {
-            List<TodoTaskDTO> todoTasksDTO = new List<TodoTaskDTO>();
-            this.SetHttpEnvironment();
-
-            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/tasks", string.Empty));
-
-            try
-            {
-                HttpResponseMessage response = null;
-
-                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
-
-                response = await HttpClient.GetAsync(uri);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    todoTasksDTO = System.Text.Json.JsonSerializer.Deserialize<List<TodoTaskDTO>>(content, JsonSerializerOptions);
-                    int j = 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                
-            }
-
-            return todoTasksDTO;
         }
 
         public async Task<bool> UpdateTask()
@@ -276,10 +204,6 @@ namespace Eleos3.ViewModels.DemoApp
             return this.UpdateTaskInProcess;
         }
 
-
-
-
-
         public async Task<bool> DeleteTodoTask()
         {
             this.DeleteTaskMessageLabel.Text = "";
@@ -330,6 +254,78 @@ namespace Eleos3.ViewModels.DemoApp
             this.DeleteTaskInProcess = false;
 
             return this.DeleteTaskInProcess;
+        }
+
+        public async Task<List<TodoTaskDTO>> GetTasks()
+        {
+            List<TodoTaskDTO> todoTasksDTO = new List<TodoTaskDTO>();
+            this.SetHttpEnvironment();
+
+            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/tasks", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = null;
+
+                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
+
+                response = await HttpClient.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    todoTasksDTO = System.Text.Json.JsonSerializer.Deserialize<List<TodoTaskDTO>>(content, JsonSerializerOptions);
+                    int j = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return todoTasksDTO;
+        }
+
+        private void SetHttpEnvironment()
+        {
+            this.HttpClient = new HttpClient();
+            this.JsonSerializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+        }
+
+        private UserDTO CreateUserDTO()
+        {
+            UserDTO userDTO = new UserDTO();
+            userDTO.id = Int32.Parse(Preferences.Get("UserId", ""));
+            userDTO.emailAddress = "";
+            userDTO.password = "";
+
+            return userDTO;
+        }
+
+        private TodoTaskDTO CreateTodoTaskDTOOnAddTask(UserDTO userDTO)
+        {
+            TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
+            todoTaskDTO.id = 0;
+            todoTaskDTO.name = this.TaskNameEntry.Text;
+            todoTaskDTO.date = new DateTime(this.TaskDatePicker.Date.Year, this.TaskDatePicker.Date.Month, this.TaskDatePicker.Date.Day);
+            todoTaskDTO.user = userDTO;
+
+            return todoTaskDTO;
+        }
+
+        private TodoTaskDTO CreateTodoTaskDTOOnUpdateTask(UserDTO userDTO)
+        {
+            TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
+            todoTaskDTO.id = Int32.Parse(this.TaskIdEntryOnUpdate.Text);
+            todoTaskDTO.name = this.TaskNameEntryOnUpdate.Text;
+            todoTaskDTO.date = this.TaskDatePickerOnUpdate.Date;
+            todoTaskDTO.user = userDTO;
+
+            return todoTaskDTO;
         }
 
     }

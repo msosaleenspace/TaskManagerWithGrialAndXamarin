@@ -28,12 +28,14 @@ namespace Eleos3
 
         public List<TodoTaskDTO> Tasks { get; set; }
 
-        public ObservableCollection<TodoTaskDTO> List { get; } = new ObservableCollection<TodoTaskDTO>();
+        public ObservableCollection<TodoTaskDTO> TasksCollection { get; } = new ObservableCollection<TodoTaskDTO>();
 
         public TabbedAddTaskPage()
         {
             InitializeComponent();
             this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(
+
+
                 this.AddTaskMessageLabel,
                 this.AddTaskInProcess,
                 this.TaskNameEntry,
@@ -52,31 +54,6 @@ namespace Eleos3
                 this.TaskIdEntryOnDelete);
         }
 
-        private async void OnCloseButtonClicked(object sender, EventArgs args)
-        {
-            await Navigation.PopModalAsync();
-        }
-
-        private async void OnTappedTabGetTasksEvent(object sender, EventArgs args)
-        {
-            this.List.Clear();
-
-            UserDialogs.Instance.ShowLoading("Wait please...");
-
-            this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();
-
-            //TasksListView.ItemsSource = this.Tasks;
-
-            for (int index = 0; index < this.Tasks.Count; index++)
-            {
-                this.List.Add(this.Tasks[index]);
-            }
-
-            BindingContext = this;
-
-            UserDialogs.Instance.HideLoading();
-        }
-
         private async void OnAddTaskBtnClicked(object sender, EventArgs e)
         {
             if (!this.AddTaskInProcess)
@@ -85,18 +62,6 @@ namespace Eleos3
                 this.AddTaskInProcess = await this.TabbedAddTaskViewModel.AddTask();
                 UserDialogs.Instance.HideLoading();
             }
-        }
-
-        private void OnTabChangingEvent(object sender, EventArgs e)
-        {
-            this.TaskNameEntry.Text = "";
-            this.TaskDatePicker.Date = DateTime.Today;
-            this.AddTaskMessageLabel.Text = "";
-
-            this.TaskIdEntryOnUpdate.Text = "";
-            this.TaskNameEntryOnUpdate.Text = "";
-            this.TaskDatePickerOnUpdate.Date = DateTime.Today;
-            this.UpdateTaskMessageLabel.Text = "";
         }
 
         private async void OnUpdateTaskBtnClicked(object sender, EventArgs e)
@@ -117,6 +82,44 @@ namespace Eleos3
                 this.DeleteTaskInProcess = await this.TabbedAddTaskViewModel.DeleteTodoTask();
                 UserDialogs.Instance.HideLoading();
             }
+        }
+
+        private async void OnTappedTabGetTasksEvent(object sender, EventArgs args)
+        {
+            this.Tasks.Clear();
+
+            UserDialogs.Instance.ShowLoading("Wait please...");
+
+            this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();
+
+            for (int index = 0; index < this.Tasks.Count; index++)
+            {
+                this.Tasks.Add(this.Tasks[index]);
+            }
+
+            BindingContext = this;
+
+            UserDialogs.Instance.HideLoading();
+        }
+
+        private void OnTabChangingEvent(object sender, EventArgs e)
+        {
+            this.TaskNameEntry.Text = "";
+            this.TaskDatePicker.Date = DateTime.Today;
+            this.AddTaskMessageLabel.Text = "";
+
+            this.TaskIdEntryOnUpdate.Text = "";
+            this.TaskNameEntryOnUpdate.Text = "";
+            this.TaskDatePickerOnUpdate.Date = DateTime.Today;
+            this.UpdateTaskMessageLabel.Text = "";
+
+            this.TaskIdEntryOnDelete.Text = "";
+            this.DeleteTaskMessageLabel.Text = "";
+        }
+
+        private async void OnCloseButtonClicked(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync();
         }
 
     }
