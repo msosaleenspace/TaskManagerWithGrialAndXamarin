@@ -4,6 +4,7 @@ using UXDivers.Grial;
 using Eleos3.ViewModels.DemoApp;
 using Eleos3.Domain;
 using Acr.UserDialogs;
+using System.ComponentModel;
 
 namespace Eleos3
 {
@@ -85,6 +86,56 @@ namespace Eleos3
         {
             await Navigation.PopModalAsync();
         }
+
+
+
+        private void ImageButton_Clicked(object sender, EventArgs e)
+        {
+            var imageButton = sender as ImageButton;
+            if (this.PasswordEntryLogin.IsPassword)
+            {
+                imageButton.Source = ImageSource.FromFile("dog.png");
+                this.PasswordEntryLogin.IsPassword = false;
+            }
+            else
+            {
+                imageButton.Source = ImageSource.FromFile("dog.png");
+                this.PasswordEntryLogin.IsPassword = true;
+            }
+        }
+
+
+
+    }
+
+    public class ShowPasswordTriggerAction : TriggerAction<ImageButton>, INotifyPropertyChanged
+    {
+        public string ShowIcon { get; set; }
+        public string HideIcon { get; set; }
+
+        bool _hidePassword = true;
+
+        public bool HidePassword
+        {
+            set
+            {
+                if (_hidePassword != value)
+                {
+                    _hidePassword = value;
+
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HidePassword)));
+                }
+            }
+            get => _hidePassword;
+        }
+
+        protected override void Invoke(ImageButton sender)
+        {
+            sender.Source = HidePassword ? ShowIcon : HideIcon;
+            HidePassword = !HidePassword;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
     }
 

@@ -118,25 +118,28 @@
                                     </StackLayout>
 
                                     <!-- Password -->
-                                    <StackLayout
-										Orientation="Horizontal"
-										Spacing="14">
-                                        <Label
-											FontSize="24"
-											VerticalOptions="Center"
-											HorizontalOptions="Center"
-											Text="{ x:Static local:GrialIconsFont.Lock }"
-											FontFamily="{ StaticResource IconsFontFamily }"
-											TextColor="{ DynamicResource BaseTextColor }" />
-
-                                        <Entry
-											IsPassword="true"
-											x:Name="PasswordEntryLogin"
-											Placeholder="Password"
-											VerticalOptions="Center"
-											HorizontalOptions="FillAndExpand" />
-                                        
-                                    </StackLayout>
+                                   
+                                        <StackLayout VerticalOptions="Center" Padding="20">
+											<Grid>
+												<Entry VerticalOptions="Center"
+													HorizontalOptions="FillAndExpand"
+													Placeholder="Password"
+													x:Name="PasswordEntryLogin"
+													IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}"/>
+												 <ImageButton VerticalOptions="Center" Margin="0,0,10,0" 
+												   HeightRequest="20"
+												   HorizontalOptions="End"
+												   Source="ic_eye_hide">
+													   <ImageButton.Triggers>
+															<EventTrigger Event="Clicked">
+																 <local:ShowPasswordTriggerAction ShowIcon="ic_eye"
+																								  HideIcon="ic_eye_hide"
+																								  x:Name="ShowPasswordActualTrigger"/>
+															 </EventTrigger>
+													  </ImageButton.Triggers>
+												 </ImageButton>
+											</Grid>
+										</StackLayout>
 
 									<StackLayout
 										Spacing="0">
