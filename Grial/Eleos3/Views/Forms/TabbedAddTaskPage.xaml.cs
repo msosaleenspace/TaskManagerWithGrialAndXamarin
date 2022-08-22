@@ -24,6 +24,8 @@ namespace Eleos3
 
         private bool UpdateTaskInProcess = false;
 
+        private bool DeleteTaskInProcess = false;
+
         public List<TodoTaskDTO> Tasks { get; set; }
 
         public ObservableCollection<TodoTaskDTO> List { get; } = new ObservableCollection<TodoTaskDTO>();
@@ -41,7 +43,13 @@ namespace Eleos3
                 this.UpdateTaskInProcess,
                 this.TaskIdEntryOnUpdate,
                 this.TaskNameEntryOnUpdate,
-                this.TaskDatePickerOnUpdate);
+                this.TaskDatePickerOnUpdate,
+
+
+
+                this.DeleteTaskMessageLabel,
+                this.DeleteTaskInProcess,
+                this.TaskIdEntryOnDelete);
         }
 
         private async void OnCloseButtonClicked(object sender, EventArgs args)
@@ -100,6 +108,17 @@ namespace Eleos3
                 UserDialogs.Instance.HideLoading();
             }
         }
+
+        private async void OnDeleteTaskBtnClicked(object sender, EventArgs e)
+        {
+            if (!this.DeleteTaskInProcess)
+            {
+                UserDialogs.Instance.ShowLoading("Wait please...");
+                this.DeleteTaskInProcess = await this.TabbedAddTaskViewModel.DeleteTodoTask();
+                UserDialogs.Instance.HideLoading();
+            }
+        }
+
     }
 
 }

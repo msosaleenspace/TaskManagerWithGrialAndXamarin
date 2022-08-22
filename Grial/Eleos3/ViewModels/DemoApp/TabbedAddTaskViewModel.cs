@@ -41,6 +41,14 @@ namespace Eleos3.ViewModels.DemoApp
 
         private DatePicker TaskDatePickerOnUpdate { get; set; }
 
+
+
+        private bool DeleteTaskInProcess { get; set; }
+
+        private Label DeleteTaskMessageLabel { get; set; }
+
+        private Entry TaskIdEntryOnDelete { get; set; }
+
         public TabbedAddTaskViewModel(
             Label addTaskMessageLabel,
             bool addTaskInProcess,
@@ -51,7 +59,11 @@ namespace Eleos3.ViewModels.DemoApp
             bool updateTaskInProcess,
             Entry taskIdEntryOnUpdate,
             Entry taskNameEntryOnUpdate,
-            DatePicker taskDatePickerOnUpdate)
+            DatePicker taskDatePickerOnUpdate,
+
+            Label deleteTaskMessageLabel,
+            bool deleteTaskInProcess,
+            Entry taskIdEntryOnDelete)
         {
             this.AddTaskMessageLabel = addTaskMessageLabel;
             this.AddTaskInProcess = addTaskInProcess;
@@ -64,6 +76,11 @@ namespace Eleos3.ViewModels.DemoApp
             this.TaskIdEntryOnUpdate = taskIdEntryOnUpdate;
             this.TaskNameEntryOnUpdate = taskNameEntryOnUpdate;
             this.TaskDatePickerOnUpdate = taskDatePickerOnUpdate;
+
+
+            this.DeleteTaskMessageLabel = deleteTaskMessageLabel;
+            this.DeleteTaskInProcess = deleteTaskInProcess;
+            this.TaskIdEntryOnDelete = taskIdEntryOnDelete;
         }
 
         private void SetHttpEnvironment()
@@ -257,6 +274,62 @@ namespace Eleos3.ViewModels.DemoApp
             this.UpdateTaskInProcess = false;
 
             return this.UpdateTaskInProcess;
+        }
+
+
+
+
+
+        public async Task<bool> DeleteTodoTask()
+        {
+            this.DeleteTaskMessageLabel.Text = "";
+            this.DeleteTaskInProcess = true;
+
+            this.SetHttpEnvironment();
+
+            try
+            {
+                int todoTaskId = Int32.Parse(this.TaskIdEntryOnDelete.Text);
+
+                Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/tasks/" + todoTaskId, string.Empty));
+
+                HttpResponseMessage response = null;
+
+                HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
+
+                response = await HttpClient.DeleteAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    this.DeleteTaskMessageLabel.Text = "Task deleted successfully!";
+                }
+                else
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
+                    this.DeleteTaskMessageLabel.Text = responseDTO.errorMessage;
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                this.DeleteTaskMessageLabel.Text = "Check your input data please!";
+            }
+            catch (FormatException ex)
+            {
+                this.DeleteTaskMessageLabel.Text = "'Id' must be a number.";
+            }
+            catch (JsonException ex)
+            {
+                this.DeleteTaskMessageLabel.Text = "Could not connect to server.";
+            }
+            catch (Exception ex)
+            {
+                this.DeleteTaskMessageLabel.Text = ex.Message;
+            }
+
+            this.DeleteTaskInProcess = false;
+
+            return this.DeleteTaskInProcess;
         }
 
     }

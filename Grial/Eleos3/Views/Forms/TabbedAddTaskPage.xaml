@@ -306,7 +306,119 @@
 
 
 
-					<!-- Get tasks TAB -->
+
+
+
+
+
+
+
+
+
+
+
+				
+
+					<!-- DELETE TASK -->
+					<grial:TabItem
+						IconText="{ x:Static local:GrialIconsFont.Camera }"
+						Text="Delete Task">   
+                        <ScrollView>
+                            <Grid
+								Padding="20"
+								Style="{ StaticResource ResponsiveLandscapeMarginStyle }">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+										Height="*" />
+                                    <RowDefinition
+										Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackLayout
+									Grid.Row="0"
+									VerticalOptions="Center"
+									Spacing="20">
+                                    <!-- Id -->
+                                    <StackLayout
+										Orientation="Horizontal"
+										Spacing="14">
+                                        <Label
+											FontSize="24"
+											VerticalOptions="Center"
+											HorizontalOptions="Center"
+											Text="{ x:Static local:GrialIconsFont.Mail }"
+											FontFamily="{ StaticResource IconsFontFamily }"
+											TextColor="{ DynamicResource BaseTextColor }" />
+
+                                        <Entry
+											Placeholder="Id"
+											VerticalOptions="Center"
+											HorizontalOptions="FillAndExpand"
+											x:Name="TaskIdEntryOnDelete"/>
+                                        
+                                    </StackLayout>
+
+									<StackLayout
+										Spacing="14">
+                                        <Label
+											x:Name="DeleteTaskMessageLabel"
+											Text=""
+											FontSize="18"
+											HorizontalOptions="Center"
+											HorizontalTextAlignment="Center"
+										/>
+                                        
+                                    </StackLayout> 
+
+                                </StackLayout>
+
+                                <StackLayout
+									Grid.Row="1"
+									Spacing="15"
+									VerticalOptions="End"
+									Margin="0,30,0,0">
+                                    <!-- Primary Button -->
+                                    <Button
+										Clicked="OnDeleteTaskBtnClicked"
+										HeightRequest="44"
+										VerticalOptions="Center"
+										Text="Confirm"
+										Style="{ StaticResource PrimaryActionButtonStyle }" />
+
+									 <!-- Line -->
+                                    <BoxView
+										VerticalOptions="Center"
+										HorizontalOptions="Fill"
+										Style="{ StaticResource Horizontal1ptLineStyle }" />
+
+                                </StackLayout>
+
+                            </Grid>
+                        </ScrollView>
+                        
+                    </grial:TabItem>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<!-- GET TASKS TAB -->
                     <grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
 						Text="Get tasks"
