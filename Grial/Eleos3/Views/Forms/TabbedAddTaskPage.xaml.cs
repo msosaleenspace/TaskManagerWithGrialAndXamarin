@@ -18,7 +18,7 @@ namespace Eleos3
     public partial class TabbedAddTaskPage : ContentPage
     {
 
-        public TabbedAddTaskViewModel TabbedAddTaskViewModel { get; set; }
+        private TabbedAddTaskViewModel TabbedAddTaskViewModel { get; set; }
 
         private bool AddTaskInProcess = false;
 
@@ -26,32 +26,34 @@ namespace Eleos3
 
         private bool DeleteTaskInProcess = false;
 
-        public List<TodoTaskDTO> Tasks { get; set; }
+        private List<TodoTaskDTO> Tasks = new List<TodoTaskDTO>();
 
         public ObservableCollection<TodoTaskDTO> TasksCollection { get; } = new ObservableCollection<TodoTaskDTO>();
+
+        private TabbedAddTaskPageObjects TabbedAddTaskPageObjects { get; set; }
 
         public TabbedAddTaskPage()
         {
             InitializeComponent();
-            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(
 
+            this.TabbedAddTaskPageObjects = new TabbedAddTaskPageObjects();
 
-                this.AddTaskMessageLabel,
-                this.AddTaskInProcess,
-                this.TaskNameEntry,
-                this.TaskDatePicker,
+            this.TabbedAddTaskPageObjects.AddTaskInProcess = this.AddTaskInProcess;
+            this.TabbedAddTaskPageObjects.AddTaskMessageLabel = this.AddTaskMessageLabel;
+            this.TabbedAddTaskPageObjects.TaskNameEntry = this.TaskNameEntry;
+            this.TabbedAddTaskPageObjects.TaskDatePicker = this.TaskDatePicker;
 
-                this.UpdateTaskMessageLabel,
-                this.UpdateTaskInProcess,
-                this.TaskIdEntryOnUpdate,
-                this.TaskNameEntryOnUpdate,
-                this.TaskDatePickerOnUpdate,
+            this.TabbedAddTaskPageObjects.UpdateTaskMessageLabel = this.UpdateTaskMessageLabel;
+            this.TabbedAddTaskPageObjects.UpdateTaskInProcess = this.UpdateTaskInProcess;
+            this.TabbedAddTaskPageObjects.TaskIdEntryOnUpdate = this.TaskIdEntryOnUpdate;
+            this.TabbedAddTaskPageObjects.TaskNameEntryOnUpdate = this.TaskNameEntryOnUpdate;
+            this.TabbedAddTaskPageObjects.TaskDatePickerOnUpdate = this.TaskDatePickerOnUpdate;
 
+            this.TabbedAddTaskPageObjects.DeleteTaskMessageLabel = this.DeleteTaskMessageLabel;
+            this.TabbedAddTaskPageObjects.DeleteTaskInProcess = this.DeleteTaskInProcess;
+            this.TabbedAddTaskPageObjects.TaskIdEntryOnDelete = this.TaskIdEntryOnDelete;
 
-
-                this.DeleteTaskMessageLabel,
-                this.DeleteTaskInProcess,
-                this.TaskIdEntryOnDelete);
+            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.TabbedAddTaskPageObjects);
         }
 
         private async void OnAddTaskBtnClicked(object sender, EventArgs e)
@@ -86,7 +88,7 @@ namespace Eleos3
 
         private async void OnTappedTabGetTasksEvent(object sender, EventArgs args)
         {
-            this.Tasks.Clear();
+            this.TasksCollection.Clear();
 
             UserDialogs.Instance.ShowLoading("Wait please...");
 
@@ -94,7 +96,7 @@ namespace Eleos3
 
             for (int index = 0; index < this.Tasks.Count; index++)
             {
-                this.Tasks.Add(this.Tasks[index]);
+                this.TasksCollection.Add(this.Tasks[index]);
             }
 
             BindingContext = this;

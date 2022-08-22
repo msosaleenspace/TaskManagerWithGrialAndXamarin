@@ -301,24 +301,6 @@
                         
                     </grial:TabItem>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-
 					<!-- DELETE TASK -->
 					<grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
@@ -398,26 +380,6 @@
                         
                     </grial:TabItem>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 					<!-- GET TASKS TAB -->
                     <grial:TabItem
 						IconText="{ x:Static local:GrialIconsFont.Camera }"
@@ -430,7 +392,7 @@
 							<ListView
 								CachingStrategy="RecycleElement"
 								SeparatorVisibility="Default"
-								ItemsSource="{ Binding List }"
+								ItemsSource="{ Binding TasksCollection }"
 								HasUnevenRows="false"
 								RowHeight="140">
 								<ListView.ItemTemplate>

@@ -10,7 +10,7 @@ namespace Eleos3
     public partial class TabbedLoginPage : ContentPage
     {
 
-        public TabbedLoginPageViewModel TabbedLoginPageViewModel { get; set; }
+        private TabbedLoginPageViewModel TabbedLoginPageViewModel { get; set; }
 
         private bool LoginInProcess = false;
 
@@ -18,29 +18,26 @@ namespace Eleos3
 
         private bool SignupInProcess = false;
 
+        private TabbedLoginPageObjects TabbedLoginPageObjects { get; set; }
+
         public TabbedLoginPage()
         {
             InitializeComponent();
 
-            TabbedLoginPageObjects tabbedLoginPageObjects = new TabbedLoginPageObjects();
+            this.TabbedLoginPageObjects = new TabbedLoginPageObjects();
 
-            tabbedLoginPageObjects.LoginInProcess = this.LoginInProcess;
-            tabbedLoginPageObjects.MessageLabelLogin = this.MessageLabelLogin;
-            tabbedLoginPageObjects.EmailAddressEntryLogin = this.EmailAddressEntryLogin;
-            tabbedLoginPageObjects.PasswordEntryLogin = this.PasswordEntryLogin;
-            tabbedLoginPageObjects.SignupInProcess = this.SignupInProcess;
-            tabbedLoginPageObjects.MessageLabelSignup = this.MessageLabelSignup;
-            tabbedLoginPageObjects.EmailAddressEntrySignup = this.EmailAddressEntrySignup;
-            tabbedLoginPageObjects.PasswordEntrySignup = this.PasswordEntrySignup;
-            tabbedLoginPageObjects.LogoutInProcess = this.LogoutInProcess;
-            tabbedLoginPageObjects.LogoutMessageLabel = this.LogoutMessageLabel;
+            this.TabbedLoginPageObjects.LoginInProcess = this.LoginInProcess;
+            this.TabbedLoginPageObjects.MessageLabelLogin = this.MessageLabelLogin;
+            this.TabbedLoginPageObjects.EmailAddressEntryLogin = this.EmailAddressEntryLogin;
+            this.TabbedLoginPageObjects.PasswordEntryLogin = this.PasswordEntryLogin;
+            this.TabbedLoginPageObjects.SignupInProcess = this.SignupInProcess;
+            this.TabbedLoginPageObjects.MessageLabelSignup = this.MessageLabelSignup;
+            this.TabbedLoginPageObjects.EmailAddressEntrySignup = this.EmailAddressEntrySignup;
+            this.TabbedLoginPageObjects.PasswordEntrySignup = this.PasswordEntrySignup;
+            this.TabbedLoginPageObjects.LogoutInProcess = this.LogoutInProcess;
+            this.TabbedLoginPageObjects.LogoutMessageLabel = this.LogoutMessageLabel;
 
-            this.TabbedLoginPageViewModel = new TabbedLoginPageViewModel(tabbedLoginPageObjects);
-        }
-
-        private async void OnCloseButtonClicked(object sender, EventArgs args)
-        {
-            await Navigation.PopModalAsync();
+            this.TabbedLoginPageViewModel = new TabbedLoginPageViewModel(this.TabbedLoginPageObjects);
         }
 
         private async void OnLoginBtnClicked(object sender, EventArgs e)
@@ -63,6 +60,16 @@ namespace Eleos3
             }
         }
 
+        private async void OnLogoutBtnClicked(object sender, EventArgs e)
+        {
+            if (!this.LogoutInProcess)
+            {
+                UserDialogs.Instance.ShowLoading("Wait please...");
+                this.LogoutInProcess = await this.TabbedLoginPageViewModel.Logout();
+                UserDialogs.Instance.HideLoading();
+            }
+        }
+
         private void OnTabChangingEvent(object sender, EventArgs e)
         {
             this.MessageLabelLogin.Text = "";
@@ -74,15 +81,9 @@ namespace Eleos3
             this.LogoutMessageLabel.Text = "";
         }
 
-        private async void OnLogoutBtnClicked(object sender, EventArgs e)
+        private async void OnCloseButtonClicked(object sender, EventArgs args)
         {
-            if (!this.LogoutInProcess)
-            {
-                UserDialogs.Instance.ShowLoading("Wait please...");
-                this.LogoutInProcess = await this.TabbedLoginPageViewModel.Logout();
-                UserDialogs.Instance.HideLoading();
-            }
-
+            await Navigation.PopModalAsync();
         }
 
     }
