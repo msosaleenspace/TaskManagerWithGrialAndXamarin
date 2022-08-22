@@ -13,20 +13,20 @@ using JsonException = System.Text.Json.JsonException;
 namespace Eleos3.ViewModels.DemoApp
 {
 
-    public class TabbedLoginPageViewModel
+    public class TabbedLoginLogoutAndSignupPageViewModel
     {
 
         private HttpClient HttpClient { get; set; }
 
         private JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-        private TabbedLoginPageObjects TabbedLoginPageObjects { get; set; }
+        private TabbedLoginLogoutAndSignupPageObjects TabbedLoginPageObjects { get; set; }
 
         private Label LogoutMessageLabel { get; set; }
 
         private bool LogoutInProcess { get; set; }
 
-        public TabbedLoginPageViewModel(TabbedLoginPageObjects tabbedLoginPageObjects)
+        public TabbedLoginLogoutAndSignupPageViewModel(TabbedLoginLogoutAndSignupPageObjects tabbedLoginPageObjects)
         {
             this.TabbedLoginPageObjects = tabbedLoginPageObjects;
 

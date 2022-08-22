@@ -15,16 +15,16 @@ using System.Collections.Generic;
 namespace Eleos3.ViewModels.DemoApp
 {
 
-    public class TabbedAddTaskViewModel
+    public class TabbedTaskManagementViewModel
     {
 
         private HttpClient HttpClient { get; set; }
 
         private JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-        private TabbedAddTaskPageObjects TabbedAddTaskPageObjects { get; set; }
+        private TabbedTaskManagementPageObjects TabbedAddTaskPageObjects { get; set; }
 
-        public TabbedAddTaskViewModel(TabbedAddTaskPageObjects tabbedAddTaskPageObjects)
+        public TabbedTaskManagementViewModel(TabbedTaskManagementPageObjects tabbedAddTaskPageObjects)
         {
             this.TabbedAddTaskPageObjects = tabbedAddTaskPageObjects;
         }

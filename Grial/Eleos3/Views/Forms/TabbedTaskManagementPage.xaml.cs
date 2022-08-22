@@ -15,10 +15,10 @@ using System.Numerics;
 
 namespace Eleos3
 {
-    public partial class TabbedAddTaskPage : ContentPage
+    public partial class TabbedTaskManagementPage : ContentPage
     {
 
-        private TabbedAddTaskViewModel TabbedAddTaskViewModel { get; set; }
+        private TabbedTaskManagementViewModel TabbedAddTaskViewModel { get; set; }
 
         private bool AddTaskInProcess = false;
 
@@ -30,13 +30,13 @@ namespace Eleos3
 
         public ObservableCollection<TodoTaskDTO> TasksCollection { get; } = new ObservableCollection<TodoTaskDTO>();
 
-        private TabbedAddTaskPageObjects TabbedAddTaskPageObjects { get; set; }
+        private TabbedTaskManagementPageObjects TabbedAddTaskPageObjects { get; set; }
 
-        public TabbedAddTaskPage()
+        public TabbedTaskManagementPage()
         {
             InitializeComponent();
 
-            this.TabbedAddTaskPageObjects = new TabbedAddTaskPageObjects();
+            this.TabbedAddTaskPageObjects = new TabbedTaskManagementPageObjects();
 
             this.TabbedAddTaskPageObjects.AddTaskInProcess = this.AddTaskInProcess;
             this.TabbedAddTaskPageObjects.AddTaskMessageLabel = this.AddTaskMessageLabel;
@@ -53,7 +53,7 @@ namespace Eleos3
             this.TabbedAddTaskPageObjects.DeleteTaskInProcess = this.DeleteTaskInProcess;
             this.TabbedAddTaskPageObjects.TaskIdEntryOnDelete = this.TaskIdEntryOnDelete;
 
-            this.TabbedAddTaskViewModel = new TabbedAddTaskViewModel(this.TabbedAddTaskPageObjects);
+            this.TabbedAddTaskViewModel = new TabbedTaskManagementViewModel(this.TabbedAddTaskPageObjects);
         }
 
         private async void OnAddTaskBtnClicked(object sender, EventArgs e)

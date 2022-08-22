@@ -7,10 +7,10 @@ using Acr.UserDialogs;
 
 namespace Eleos3
 {
-    public partial class TabbedLoginPage : ContentPage
+    public partial class TabbedLoginLogoutAndSignupPage : ContentPage
     {
 
-        private TabbedLoginPageViewModel TabbedLoginPageViewModel { get; set; }
+        private TabbedLoginLogoutAndSignupPageViewModel TabbedLoginPageViewModel { get; set; }
 
         private bool LoginInProcess = false;
 
@@ -18,13 +18,13 @@ namespace Eleos3
 
         private bool SignupInProcess = false;
 
-        private TabbedLoginPageObjects TabbedLoginPageObjects { get; set; }
+        private TabbedLoginLogoutAndSignupPageObjects TabbedLoginPageObjects { get; set; }
 
-        public TabbedLoginPage()
+        public TabbedLoginLogoutAndSignupPage()
         {
             InitializeComponent();
 
-            this.TabbedLoginPageObjects = new TabbedLoginPageObjects();
+            this.TabbedLoginPageObjects = new TabbedLoginLogoutAndSignupPageObjects();
 
             this.TabbedLoginPageObjects.LoginInProcess = this.LoginInProcess;
             this.TabbedLoginPageObjects.MessageLabelLogin = this.MessageLabelLogin;
@@ -37,7 +37,7 @@ namespace Eleos3
             this.TabbedLoginPageObjects.LogoutInProcess = this.LogoutInProcess;
             this.TabbedLoginPageObjects.LogoutMessageLabel = this.LogoutMessageLabel;
 
-            this.TabbedLoginPageViewModel = new TabbedLoginPageViewModel(this.TabbedLoginPageObjects);
+            this.TabbedLoginPageViewModel = new TabbedLoginLogoutAndSignupPageViewModel(this.TabbedLoginPageObjects);
         }
 
         private async void OnLoginBtnClicked(object sender, EventArgs e)

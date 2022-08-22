@@ -113,8 +113,8 @@ namespace Eleos3
                 MainMenuEntries = new List<MenuEntry>
                 {
                    
-             new MenuEntry { Name = Resx.AppResources.PageTitleTabbedLogin, Icon = GrialIconsFont.Fire, PageType = typeof(TabbedLoginPage), IsModal = true },
-             new MenuEntry { Name = "Tasks management", Icon = GrialIconsFont.Fire, PageType = typeof(TabbedAddTaskPage), IsModal = true }
+             new MenuEntry { Name = Resx.AppResources.PageTitleTabbedLogin, Icon = GrialIconsFont.Fire, PageType = typeof(TabbedLoginLogoutAndSignupPage), IsModal = true },
+             new MenuEntry { Name = "Tasks management", Icon = GrialIconsFont.Fire, PageType = typeof(TabbedTaskManagementPage), IsModal = true }
                 };
               }
 

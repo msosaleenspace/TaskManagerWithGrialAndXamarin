@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace Eleos3.Domain
 {
-	public class TabbedLoginPageObjects
+	public class TabbedLoginLogoutAndSignupPageObjects
 	{
 
         public bool LoginInProcess { get; set; }
@@ -26,7 +26,7 @@ namespace Eleos3.Domain
 
         public bool LogoutInProcess { get; set; }
 
-        public TabbedLoginPageObjects()
+        public TabbedLoginLogoutAndSignupPageObjects()
 		{
 		}
 

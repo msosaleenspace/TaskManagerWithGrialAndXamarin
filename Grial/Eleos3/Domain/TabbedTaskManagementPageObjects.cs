@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace Eleos3.Domain
 {
-	public class TabbedAddTaskPageObjects
+	public class TabbedTaskManagementPageObjects
 	{
 
         public bool AddTaskInProcess { get; set; }
@@ -13,7 +13,6 @@ namespace Eleos3.Domain
         public Entry TaskNameEntry { get; set; }
 
         public DatePicker TaskDatePicker { get; set; }
-
 
         public bool UpdateTaskInProcess { get; set; }
 
@@ -25,14 +24,13 @@ namespace Eleos3.Domain
 
         public DatePicker TaskDatePickerOnUpdate { get; set; }
 
-
         public bool DeleteTaskInProcess { get; set; }
 
         public Label DeleteTaskMessageLabel { get; set; }
 
         public Entry TaskIdEntryOnDelete { get; set; }
 
-        public TabbedAddTaskPageObjects()
+        public TabbedTaskManagementPageObjects()
 		{
 		}
 
