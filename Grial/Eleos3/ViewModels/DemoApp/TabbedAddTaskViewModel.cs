@@ -30,15 +30,40 @@ namespace Eleos3.ViewModels.DemoApp
 
         private DatePicker TaskDatePicker { get; set; }
 
-        public TabbedAddTaskViewModel(Label addTaskMessageLabel,
+
+        private bool UpdateTaskInProcess { get; set; }
+
+        private Label UpdateTaskMessageLabel { get; set; }
+
+        private Entry TaskIdEntryOnUpdate { get; set; }
+
+        private Entry TaskNameEntryOnUpdate { get; set; }
+
+        private DatePicker TaskDatePickerOnUpdate { get; set; }
+
+        public TabbedAddTaskViewModel(
+            Label addTaskMessageLabel,
             bool addTaskInProcess,
             Entry taskNameEntry,
-            DatePicker taskDatePicker)
+            DatePicker taskDatePicker,
+
+            Label updateTaskMessageLabel,
+            bool updateTaskInProcess,
+            Entry taskIdEntryOnUpdate,
+            Entry taskNameEntryOnUpdate,
+            DatePicker taskDatePickerOnUpdate)
         {
             this.AddTaskMessageLabel = addTaskMessageLabel;
             this.AddTaskInProcess = addTaskInProcess;
             this.TaskNameEntry = taskNameEntry;
             this.TaskDatePicker = taskDatePicker;
+
+
+            this.UpdateTaskMessageLabel = updateTaskMessageLabel;
+            this.UpdateTaskInProcess = updateTaskInProcess;
+            this.TaskIdEntryOnUpdate = taskIdEntryOnUpdate;
+            this.TaskNameEntryOnUpdate = taskNameEntryOnUpdate;
+            this.TaskDatePickerOnUpdate = taskDatePickerOnUpdate;
         }
 
         private void SetHttpEnvironment()
@@ -62,7 +87,7 @@ namespace Eleos3.ViewModels.DemoApp
             try
             {
                 UserDTO userDTO = this.CreateUserDTO();
-                TodoTaskDTO todoTaskDTO = this.CreateTodoTaskDTO(userDTO);
+                TodoTaskDTO todoTaskDTO = this.CreateTodoTaskDTOOnAddTask(userDTO);
 
                 string json = System.Text.Json.JsonSerializer.Serialize<TodoTaskDTO>(todoTaskDTO, this.JsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -119,7 +144,7 @@ namespace Eleos3.ViewModels.DemoApp
             return userDTO;
         }
 
-        private TodoTaskDTO CreateTodoTaskDTO(UserDTO userDTO)
+        private TodoTaskDTO CreateTodoTaskDTOOnAddTask(UserDTO userDTO)
         {
             TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
             todoTaskDTO.id = 0;
@@ -130,6 +155,16 @@ namespace Eleos3.ViewModels.DemoApp
             return todoTaskDTO;
         }
 
+        private TodoTaskDTO CreateTodoTaskDTOOnUpdateTask(UserDTO userDTO)
+        {
+            TodoTaskDTO todoTaskDTO = new TodoTaskDTO();
+            todoTaskDTO.id = Int32.Parse(this.TaskIdEntryOnUpdate.Text);
+            todoTaskDTO.name = this.TaskNameEntryOnUpdate.Text;
+            todoTaskDTO.date = this.TaskDatePickerOnUpdate.Date;
+            todoTaskDTO.user = userDTO;
+
+            return todoTaskDTO;
+        }
 
         public async Task<List<TodoTaskDTO>> GetTasks()
         {
@@ -159,6 +194,69 @@ namespace Eleos3.ViewModels.DemoApp
             }
 
             return todoTasksDTO;
+        }
+
+        public async Task<bool> UpdateTask()
+        {
+            this.UpdateTaskMessageLabel.Text = "";
+            this.UpdateTaskInProcess = true;
+
+            this.SetHttpEnvironment();
+
+            Uri uri = new Uri(string.Format("https://leenspacetaskmanager.herokuapp.com/api/tasks", string.Empty));
+
+            try
+            {
+                UserDTO userDTO = this.CreateUserDTO();
+                TodoTaskDTO todoTaskDTO = this.CreateTodoTaskDTOOnUpdateTask(userDTO);
+
+                string json = System.Text.Json.JsonSerializer.Serialize<TodoTaskDTO>(todoTaskDTO, this.JsonSerializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+
+                this.HttpClient.DefaultRequestHeaders.Add("token", Preferences.Get("Token", ""));
+
+                response = await this.HttpClient.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    this.TaskIdEntryOnUpdate .Text = "";
+                    this.TaskNameEntryOnUpdate.Text = "";
+                    this.TaskDatePickerOnUpdate.Date = DateTime.Today;
+                    this.UpdateTaskMessageLabel.Text = "Task updated successfully!";
+                }
+                else
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseDTO = System.Text.Json.JsonSerializer.Deserialize<ResponseDTO>(responseContent);
+                    this.UpdateTaskMessageLabel.Text = responseDTO.errorMessage;
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                this.UpdateTaskMessageLabel.Text = "Check your input data please!";
+            }
+            catch (NullReferenceException ex)
+            {
+                this.UpdateTaskMessageLabel.Text = "Check your input data please!";
+            }
+            catch (FormatException ex)
+            {
+                this.UpdateTaskMessageLabel.Text = "'Id' must be a number.";
+            }
+            catch (JsonException ex)
+            {
+                this.UpdateTaskMessageLabel.Text = "Could not connect to server.";
+            }
+            catch (Exception ex)
+            {
+                this.UpdateTaskMessageLabel.Text = ex.Message;
+            }
+
+            this.UpdateTaskInProcess = false;
+
+            return this.UpdateTaskInProcess;
         }
 
     }

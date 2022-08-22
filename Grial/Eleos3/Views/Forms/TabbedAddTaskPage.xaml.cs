@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using System.Threading;
 using Acr.UserDialogs;
+using System.Numerics;
 
 namespace Eleos3
 {
@@ -19,9 +20,9 @@ namespace Eleos3
 
         public TabbedAddTaskViewModel TabbedAddTaskViewModel { get; set; }
 
-        private bool LogoutInProcess = false;
-
         private bool AddTaskInProcess = false;
+
+        private bool UpdateTaskInProcess = false;
 
         public List<TodoTaskDTO> Tasks { get; set; }
 
@@ -34,7 +35,13 @@ namespace Eleos3
                 this.AddTaskMessageLabel,
                 this.AddTaskInProcess,
                 this.TaskNameEntry,
-                this.TaskDatePicker);
+                this.TaskDatePicker,
+
+                this.UpdateTaskMessageLabel,
+                this.UpdateTaskInProcess,
+                this.TaskIdEntryOnUpdate,
+                this.TaskNameEntryOnUpdate,
+                this.TaskDatePickerOnUpdate);
         }
 
         private async void OnCloseButtonClicked(object sender, EventArgs args)
@@ -44,6 +51,8 @@ namespace Eleos3
 
         private async void OnTappedTabGetTasksEvent(object sender, EventArgs args)
         {
+            this.List.Clear();
+
             UserDialogs.Instance.ShowLoading("Wait please...");
 
             this.Tasks = await this.TabbedAddTaskViewModel.GetTasks();
@@ -75,8 +84,22 @@ namespace Eleos3
             this.TaskNameEntry.Text = "";
             this.TaskDatePicker.Date = DateTime.Today;
             this.AddTaskMessageLabel.Text = "";
+
+            this.TaskIdEntryOnUpdate.Text = "";
+            this.TaskNameEntryOnUpdate.Text = "";
+            this.TaskDatePickerOnUpdate.Date = DateTime.Today;
+            this.UpdateTaskMessageLabel.Text = "";
         }
 
+        private async void OnUpdateTaskBtnClicked(object sender, EventArgs e)
+        {
+            if (!this.UpdateTaskInProcess)
+            {
+                UserDialogs.Instance.ShowLoading("Wait please...");
+                this.UpdateTaskInProcess = await this.TabbedAddTaskViewModel.UpdateTask();
+                UserDialogs.Instance.HideLoading();
+            }
+        }
     }
 
 }
