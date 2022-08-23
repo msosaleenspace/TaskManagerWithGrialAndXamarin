@@ -39,12 +39,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Styles\curved_mask.svg" />
+    <EmbeddedResource Include="Helpers\Fonts\Barlow-Black.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Styles\curved_mask.svg" />
     <None Remove="Domain\" />
     <None Remove="System.Text.Json" />
     <None Remove="Acr.UserDialogs" />
+    <None Remove="Helpers\Fonts\Barlow-Black.otf" />
   </ItemGroup>
   <ItemGroup></ItemGroup>
   <ItemGroup>

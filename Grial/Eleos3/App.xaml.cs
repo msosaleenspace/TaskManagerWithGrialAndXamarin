@@ -1,6 +1,8 @@
 using Xamarin.Forms;
 using UXDivers.Grial;
 
+[assembly: ExportFont("Barlow-Black.otf", Alias = "Barlow-Black")]
+
 namespace Eleos3
 {
     public partial class App : Application

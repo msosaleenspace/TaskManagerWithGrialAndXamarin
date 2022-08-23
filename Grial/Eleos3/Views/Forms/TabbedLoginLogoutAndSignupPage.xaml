@@ -95,7 +95,21 @@
 									Grid.Row="0"
 									VerticalOptions="Center"
 									Spacing="20">
-                                   
+
+
+
+								   <Label
+											FontSize="40"
+											VerticalOptions="Center"
+											HorizontalOptions="Center"
+											Text="Let's sign you in."
+											FontFamily="Barlow-Black"
+											TextColor="Black" />
+
+
+
+
+
                                     <!-- Email -->
                                     <StackLayout
 										Orientation="Horizontal"
